@@ -7,32 +7,17 @@ import scala.collection.JavaConverters._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-object app extends App {
-
-  val alice = Participant("Alice")
-  val bob = Participant("Bob")
-
-
-
+abstract class Process {
+  def ~ (continuation: Process) = ???
 }
 
-
-abstract class Process
-sealed case class IfThenElse(e: Expression[_], _then: Process, _else: Process) extends Process
-sealed case class Put(tx:Expression[_], next: Process) extends Process
-sealed case class Ask(txid:Expression[_], next: Process) extends Process
-sealed case class Send(p:Participant, v:Expression[_], next: Process) extends Process
-sealed case class Receive(p:Participant, name:String, clz:Class[_], next: Process) extends Process
-case object Nil extends Process
-
-case class Participant(name:String, process:Process)
-object Participant {
-  def apply(name:String): Participant = Participant(name, Nil)
-  def miner: Participant = Participant("Miner", mineProcess)
-  def mineProcess: Process = ??? //Generate(1, mineProcess)
-
-  def eval(p: Process, rho: Map[String,Expression[_]])(implicit blockchain: List[Transaction], buffers: Map[Participant,Expression[_]]) = ???
-
+object Process {
+  sealed case class IfThenElse(e: Expression[_], _then: Process, _else: Process) extends Process {}
+  sealed case class Put(tx:Expression[_], next: Process) extends Process
+  sealed case class Ask(txid:Expression[_], next: Process) extends Process
+  sealed case class Send(p:Participant, v:Expression[_], next: Process) extends Process
+  sealed case class Receive(p:Participant, name:String, clz:Class[_], next: Process) extends Process
+  case object Nil extends Process
 }
 
 object Primitive {

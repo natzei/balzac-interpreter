@@ -16,3 +16,10 @@ libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.5" % "test"
 libraryDependencies += "com.sulacosoft" % "BitcoindConnector4J" % "0.16.0"
 
 //addSbtPlugin("com.artima.supersafe" % "sbtplugin" % "1.1.3")
+
+lazy val akkaVersion = "2.5.12"
+
+libraryDependencies ++= Seq(
+  "com.typesafe.akka" %% "akka-actor" % akkaVersion,
+  "com.typesafe.akka" %% "akka-testkit" % akkaVersion,
+)
